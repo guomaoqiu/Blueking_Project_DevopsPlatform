@@ -1,7 +1,7 @@
 ##### **BkOps 一款基于腾讯蓝鲸开发者平台开发的APP **
 ![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/bkops.png)
 
-##### 
+ 
 ##### 开发框架: 蓝鲸开发者平台
 ![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/blueking_dev.jpeg)
 ![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/3.jpeg)
@@ -20,6 +20,7 @@
 * 3.通过Celery管理服务器普通任务、周期性任务、计划任务的执行；
 * 4.通过SaltApi远程执行Salt命令、代码发布；
 
-
+##### 注意: 
+这是基于腾讯蓝鲸的开发者平台开发的，如果要用此APP；则需要搭建蓝鲸平台。
 
 
