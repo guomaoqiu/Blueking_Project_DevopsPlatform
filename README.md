@@ -4,7 +4,9 @@
 ##### 
 ##### 开发框架: 蓝鲸开发者平台
 ![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/blueking_dev.jpeg)
-
+![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/3.jpeg)
+![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/1.jpeg)
+![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/2.jpeg)
 #####* 平台涵盖技术点:
 * 1.蓝鲸的统一认证框架
 * 2.Celery 任务管理组件
