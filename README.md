@@ -7,14 +7,14 @@
 ![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/3.jpeg)
 ![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/1.jpeg)
 ![](https://github.com/guomaoqiu/Blueking_Project_DevopsPlatform/raw/master/screenshots/2.jpeg)
-#####* 平台涵盖技术点:
+##### 平台涵盖技术点:
 * 1.蓝鲸的统一认证框架
 * 2.Celery 任务管理组件
 * 3.ESB蓝鲸服务组件
 * 4.SaltStackAPI
 * 5.前端js,后端Django
 
-####* 平台功能:
+##### 平台功能:
 * 1.通过蓝鲸平台能为公司不同部门不同人员快速开发应用App；
 * 2.登录验证使用同一认证框架；
 * 3.通过Celery管理服务器普通任务、周期性任务、计划任务的执行；
