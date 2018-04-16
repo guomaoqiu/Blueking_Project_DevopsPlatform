@@ -1,0 +1,248 @@
+<%inherit file="base.html"/>
+<%block name="content">
+
+    <script src="${STATIC_URL}opsplatform/js/jquery-2.1.1.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/jquery.dataTables.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/dataTables.bootstrap.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+
+  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>平台操作日志</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+                        
+                        <li class="active">
+                            <strong>平台操作日志</strong>
+                        </li>
+                    </ol>
+                    <hr>
+                  <ul class="nav nav-tabs" id="myTab">
+                     <li class="active"><a href="#messages">说明</a></li>
+
+                      <li><a href="#deploy_log">应用部署日志</a></li>
+                      <li><a href="#settings">命令执行日志</a></li>
+                    </ul>
+                </div>
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div id="ct-chart1" class="ct-perfect-fourth">
+                                <div class="tab-content">
+                                  <div class="tab-pane active" id="messages">
+                                    <div class="king-instruction king-instruction-success">
+                                        <h1>说明 此页面包含了在该平台上执行的一些日志记录</h1>
+                                        <p>1、Salt部署执行记录</p>
+                                        <p>2、Salt命令执行记录</p>
+                                        <p>3、其他功能开发中...</p>
+                                    </div>
+                                  </div>
+                                  <div class="tab-pane" id="deploy_log">
+
+                                    <table id="deploy_log_t" class="table table-bordered table-hover">
+                                        点击<code>【部署ID】</code>后面相对应的<code>【查看结果】</code>即可查看此次部署任务的返回结果
+                                        <thead>
+                                            <tr>
+
+                                                 <th>#</th>
+                                               <th>目标主机</th>
+                                               <th>部署应用</th>
+                                               <th>部署用户</th>
+                                               <th>部署时间</th>
+                                               <th>部署ID</th>
+                                               <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody>
+                                                 % for each_deploy in deploy_list:
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>${each_deploy['deploy_target']}</td>
+                                                        <td>${each_deploy['deploy_app']}</td>
+                                                        <td>${each_deploy['deploy_user']}</td>
+                                                        <td>${each_deploy['deploy_time']}</td>
+                                                        <td>${each_deploy['deploy_jid']}</td>
+                                                        <td>
+                                                            <input type="button" class="btn btn-xs btn-info"  check_id="${each_deploy['deploy_jid']}" value="查看结果" onclick="getdeploy_result(this)">
+
+                                                        </td>
+                                                    </tr>
+                                                % endfor
+                                            </tbody>
+                                             <button class="btn btn-sm btn-danger" name="deploy" onclick="clean_all_runlog(this)">清空所有日志</button>
+                                            <tfoot >
+                                       </tfoot>
+                                      </table>
+                                  </div>
+                                  <div class="tab-pane" id="settings">
+                                         <table id="runcmd_log_t"  class="table table-bordered table-hover">
+                                        点击对应的<code>【查看结果】</code>即可查看此次部署任务的返回结果
+                                        <thead>
+                                            <tr>
+                                               <th>#</th>
+                                               <th>目标主机</th>
+                                               <th>执行命令</th>
+                                               <th>执行用户</th>
+                                               <th>执行时间</th>
+                                               <th style="width: 100px">执行结果</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody>
+                                                % for each_runcmd in runcmd_list:
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>${each_runcmd['runcmd_target']}</td>
+                                                        <td>${each_runcmd['runcmd_cmd']}</td>
+                                                        <td>${each_runcmd['runcmd_user']}</td>
+                                                        <td>${each_runcmd['runcmd_time']}</td>
+                                                       <!-- <td>${each_runcmd['runcmd_result']}</td>-->
+                                                        <td>
+                                                            <input type="button" class="btn btn-xs btn-info" runcmd=${each_runcmd['runcmd_cmd']} name="${each_runcmd['runcmd_target']}" runcmd_result="${each_runcmd['runcmd_result']}" value="查看结果" onclick="get_result(this)">
+                                                        </td>
+                                                    </tr>
+                                                % endfor
+                                            </tbody>
+                                            <tfoot >
+
+                                       </tfoot>
+                                             <button class="btn btn-sm btn-danger" name="cmd" onclick="clean_all_runlog(this)">清空所有日志</button>
+                                      </table>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script>
+    function get_result(_this){
+        var runcmd_result  = $(_this).attr('runcmd_result');
+        var deploy_target = $(_this).attr('name');
+        var runcmd = $(_this).attr('runcmd');
+        layer.open({
+          type: 1,
+          title: false,
+          closeBtn: 0,
+          area: ['auto', 'auto'],
+          shadeClose: true,
+          skin: 'yourclass',
+          content:  "目标主机: " + "<code>" + deploy_target  + "</code>" + "</br>" + "执行命令: " +  "<code>" +  runcmd + "</code>"+ "<pre>" + runcmd_result + "</pre>"
+        });
+  }
+</script>
+<script>
+    function getdeploy_result(_this){
+        var  deploy_jid = $(_this).attr('check_id');
+         layer.open({
+            type: 2,
+            area: ['1100px', '700px'],
+            fixed: true, //不固/
+            closeBtn: 0,
+            shadeClose: true,
+            maxmin: true,
+            skin: 'layui-layer-rim',
+            content: '../salt_jid_result/?jid=' + deploy_jid
+            });
+  }
+</script>
+
+<script>
+    $('#myTab a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    })
+</script>
+
+<script type="text/javascript">
+  $(function () {
+    var language = {
+      search: '搜索：',
+      lengthMenu: "每页显示 _MENU_ 记录",
+      zeroRecords: "没找到相应的数据！",
+      info: "分页 _PAGE_ / _PAGES_",
+      infoEmpty: "暂无数据！",
+      infoFiltered: "(从 _MAX_ 条数据中搜索)",
+      paginate: {
+        first: '首页',
+        last: '尾页',
+        previous: '上一页',
+        next: '下一页'
+      }
+    };
+    $('#deploy_log_t').dataTable({
+      paging: true, //隐藏分页
+      ordering: true, //关闭排序
+      info: false, //隐藏左下角分页信息
+      searching: true, //关闭搜索
+      pageLength : 10, //每页显示几条数据
+      lengthChange: true, //不允许用户改变表格每页显示的记录数
+      language: language, //汉化
+      columnDefs: [  // 这是第一列不进行排序
+        { "orderable": false, "targets": 0 }
+      ]
+    } );
+   $('#runcmd_log_t').dataTable({
+      paging: true, //隐藏分页
+      ordering: true, //关闭排序
+      info: false, //隐藏左下角分页信息
+      searching: true, //关闭搜索
+      pageLength : 10, //每页显示几条数据
+      lengthChange: true, //不允许用户改变表格每页显示的记录数
+      language: language, //汉化
+      columnDefs: [  // 这是第一列不进行排序
+        { "orderable": false, "targets": 0 }
+      ]
+    } );
+  });
+</script>
+
+<script>
+      //操作选项里面的"删除"功能
+        function clean_all_runlog(_this) {
+            var logtype=$(_this).attr('name')
+          layer.msg(logtype)
+                swal({
+                  title: "您确定所有日志记录？",
+                  text: "删除后将无法恢复，请谨慎操作！",
+                  type: "warning",
+                  showCancelButton: true,
+                  showLoaderOnConfirm: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "是的，删除它们",
+                  cancelButtonText: "我在想想吧...",
+                  closeOnConfirm: false,
+                  closeOnCancel: true  //关闭取消后还弹出让你确认的效果提示
+                },
+                  function(isConfirm){
+                  if (isConfirm) {
+                    $.ajax ({
+                            type:'post',
+                            url:"${SITE_URL}delete_server/?host="+hostname,
+                            success:function(res){   //将处理的结果进行判断，根据执行失败，成功现实的提示不同的内容
+                                if (res.result) {
+                                    swal(res.message, "Your imaginary file has been deleted.", "success");
+                                    //$("input[check_id="+check_id+"]").parents("tr").remove(); //获取要删除的那行节点
+                                    $(_this).parents("tr").remove();
+                                    window.location.reload()
+                                }
+                                else {
+                                    swal(res.message, "Your imaginary file is safe :)", "error");
+                                }
+                            }
+                        });
+                     }
+                });
+            }
+</script>
+
+
+</%block>
+

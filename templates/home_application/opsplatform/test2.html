@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+    <meta charset="UTF-8">
+    <script src="${STATIC_URL}opsplatform/js/jquery-3.1.1.min.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/bootstrap.min.js"></script>
+    <script src="${STATIC_URL}js/nanobar.min.js"></script>
+    <link rel="stylesheet" href="${STATIC_URL}opsplatform/css/bootstrap.min.css">
+
+	<style>
+
+      #bar_show_area {
+        padding: 1em;
+        background: #fff;
+        margin:0 auto;
+        width: 60%;
+        box-sizing: border-box;
+      }
+
+      #bar_show_area .nanobar {
+        margin-bottom: 2em;
+      }
+
+      #bar_show_area .nanobar .bar {
+        background: #38f;
+        border-radius: 4px;
+        box-shadow: 0 0 10px #59d;
+        height: 6px;
+        /*margin: 0 auto;*/
+      }
+
+      /* 任务背景 */
+      .task_div{
+        background:#d9edf6;
+      }
+
+    </style>
+
+    <title>进度条</title>
+</head>
+<body>
+<div style="height: 20%"></div>
+<div style="text-align: center">
+    <button type="button" class="btn btn-primary" id="start_btn">原始按钮</button>
+</div>
+
+<div>
+    <div id="bar_show_area" ></div>
+</div>
+
+</body>
+<script>
+     function run(_this) {
+         var p1 = $("input[name='param1']:text").val();
+         var p2 = $("input[name='param2']:text").val();
+         $.ajax({
+             url: '${SITE_URL}execute_task/?param1=' + p1 + "param2=" + p2,
+             type: "post",
+             success: function (res) {
+                 if (res.result) {
+                     task_id = res.data;
+
+              $("#bar_show_area").append("<div class='task_div'>任务："+task_id+"<span id='"+task_id+"_span' style='float:right'></span><div id='"+task_id+"'></div><div>"); //进度条绑定区域
+              // 创建进度条对象
+              var nanobar = new Nanobar({target:document.getElementById(task_id)});
+              update_g(task_id,nanobar);
+
+                   //  $("#bar_show_area").append("<div class='progress-bar progress-bar-success' style='width: 100%'>" + "任务:" + res.data + "</div>");
+                   //  var nanobar = new Nanobar({target:document.getElementById(task_id)});
+                  //   update_g(task_id,nanobar)
+                 }
+                 else {
+                     alert('failed')
+                 }
+             }
+         });
+
+
+        function update_g(task_id,nanobar) {
+             $.ajax({
+                 url:"${SITE_URL}task_result/?task_id=" + task_id,
+                 type:"GET",
+                 success: function (res) {
+                     if (res['state'] == "success") {
+                     alert('任务完成!')
+                 }
+                 else {
+                    setTimeout(function(){
+                    update_g(task_id,nanobar);
+                  },1000);
+                 }
+                 }
+             })
+        }
+     }
+
+ </script>
+</html>

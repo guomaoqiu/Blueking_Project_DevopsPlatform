@@ -1,0 +1,213 @@
+<%inherit file="base.html"/>
+
+<%block name="content">
+<link href="https://magicbox.bkclouds.cc/static_api/v3/bk/css/bk.css?v=1.0.1" rel="stylesheet">
+<script src="${STATIC_URL}opsplatform/js/sweetalert.min.js"></script>
+<script src="${STATIC_URL}opsplatform/js/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${STATIC_URL}opsplatform/css/sweetalert.css">
+<script src="${STATIC_URL}opsplatform/js/layer.js"></script>
+
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>API信息</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+                        
+                        <li class="active">
+                            <strong>API信息</strong>
+                        </li>
+                    </ol>
+                </div>
+               
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>API信息</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart5" class="ct-perfect-fourth">
+
+
+                    % if result:
+                                 <div class="king-notice-box king-notice-happy">
+                                    <p class="king-notice-text">
+                                        已存入的API信息:
+                                    </p>
+                                </div>
+                               <div class="king-page-box">
+                                <div class="king-container clearfix">
+                                        <div class="panel-body">
+                                           <table class="table table-bordered table7_demo">
+                                                <thead>
+                                                    <tr>
+                                                        <th>场景 </th>
+                                                        <th>API 用户</th>
+                                                        <th>API 密码</th>
+                                                        <th>API URL</th>
+                                                        <th>API Status</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                            <tbody>
+                                                   % for dd in data:
+                                                <tr>
+                                                    <td>${dd['app_name']}</td>
+                                                    <td>${dd['api_user']}</td>
+                                                    <td>${dd['api_paas']}</td>
+                                                    <td>${dd['api_url']}</td>
+                                                    <td>
+                                                        <span class="label label-info">Active</span>
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" class="btn btn-xs btn-danger" check_id="${dd['id']}" name="${dd['app_name']}" value="删除" onclick="del_raw(this)">
+                                                    </td>
+                                                </tr>
+                                            % endfor
+                                            </tbody>
+                                          </table>
+                                            <input type="button" class="btn btn-xs btn-primary"  value="添加一条API信息" onclick="add_apiinfo()">
+                                        </div>
+                                </div>
+                            </div>
+                                % else:
+                            <div class="king-notice-box king-notice-sad center">
+                                <p class="king-notice-text">
+                                    尚未发现Api连接配置,请填写连接信息...
+                                </p>
+                            </div>
+                            % if res:
+                                <div class="king-notice2 king-notice-danger notice-borders">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                <div class="notice-text">
+                                    <p>不能有选项为空，请重新填写...</p>
+                                </div>
+                            </div>
+                            % endif
+                            <div class="king-block king-block-bordered">
+                            <div class="king-block-header king-gray-light">
+                                <ul class="king-block-options">
+                                    <li>
+                                        <button type="button"><i class="fa fa-cog"></i></button>
+                                    </li>
+                                </ul>
+                                <h3 class="king-block-title">填写Api连接信息</h3>
+                                </div>
+                                    <div class="king-block-content">
+
+                                        <form class="form-horizontal" id="myform" action="${SITE_URL}api_connect/" method="post" >
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">场景:</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="appname" placeholder="场景">
+                                                    <div class="king-instruction king-instruction-success">
+                                                        <p>说明:应用场景:例如 <span>saltapi</span>, <span>zabbixapi</span></p>
+                                                        <p>填写完成之后在平台应用能调用到的地方就直接可以使用该api信息连接.</p>
+                                                    </div>
+                                                </div>
+                                                <span class="text-danger mt5 fl">*</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">用户名:</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="username" placeholder="API用户名">
+                                                </div>
+                                                <span class="text-danger mt5 fl">*</span>
+                                            </div>
+                                              <div class="form-group">
+                                                <label   class="col-sm-3 control-label">密码:</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="password" placeholder="API密码">
+                                                </div>
+                                                <span class="text-danger mt5 fl">*</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="col-sm-3 control-label">URL:</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="url" placeholder="API URL">
+                                                </div>
+                                                <span class="text-danger mt5 fl">*</span>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-sm-7 col-sm-offset-3">
+                                                    <input type="submit"  class="king-btn king-success"  onclick="DoAjax()" value="提交">
+                                                    <input type="reset" class="king-btn king-default" value="重置">
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <!-- 水平布局表单-1 End -->
+                                    </div>
+                                </div>
+                                % endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+<script>
+  function add_apiinfo() {
+      layer.open({
+        type: 2,
+        area: ['850px', '400px'],
+        fixed: true, //不固/
+        closeBtn: 0,
+        shadeClose: true,
+        maxmin: true,
+        skin: 'layui-layer-rim',
+        content: '../add_apiinfo/'
+        });
+  }
+</script>
+
+<!-- 删除api信息 -->
+<script>
+ function del_raw(_this) {
+    var check_id = $(_this).attr("check_id");
+
+    swal({
+      title: "您确定要删除该条API记录？",
+      text: "删除后将无法恢复，请谨慎操作！",
+      type: "warning",
+
+      showCancelButton: true,
+      showLoaderOnConfirm: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "是的，删除它",
+      cancelButtonText: "我在想想吧...",
+      closeOnConfirm: false,
+      closeOnCancel: true  //关闭取消后还弹出让你确认的效果提示
+    },
+      function(isConfirm){
+      if (isConfirm) {    // 如果确认就会去携带者hostname去后台处理
+        $.ajax ({
+                type:'post',
+                url:"${SITE_URL}del_apiinfo/?apiid="+check_id,
+                success:function(res){   //将处理的结果进行判断，根据执行失败，成功现实的提示不同的内容
+                    if (res.result) {
+                        swal(res.message, "^o^.", "success");
+                        //$("input[check_id="+check_id+"]").parents("tr").remove(); //获取要删除的那行节点
+                        $(_this).parents("tr").remove();
+                        location.reload()
+                    }
+                    else {
+                        swal(res.message, ":)", "error");
+                    }
+                }
+            });
+      }
+    });
+}
+</script>
+
+</%block>
+

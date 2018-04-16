@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="${STATIC_URL}opsplatform/js/layer.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="${STATIC_URL}opsplatform/css/sweetalert.css">
+    <script src="${STATIC_URL}opsplatform/js/jquery-1.10.2.min.js"></script>
+    <link href="${STATIC_URL}opsplatform/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${STATIC_URL}opsplatform/css/bk.css?v=1.0.1" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<style>
+.test_box {
+
+    min-height: 600px;
+    max-height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3px;
+    outline: 0;
+    border: 1px solid #a0b3d6;
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    -webkit-user-modify: read-write-plaintext-only;
+    background-color: #161616;
+    color:green;
+}
+</style>
+
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="king-container clearfix">
+            <div class="panel panel-info m5">
+                <div class="panel-heading"> 正在对主机 <code>${hostname}</code> 执行Linux命令; 请勿执行敲击回车执行,请点击按钮<code>Run</code></div>
+                <div class="panel-body p5">
+                     <form class="form-horizontal">
+                        <div class="form-group clearfix">
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control bk-valign-top"  placeholder="Linux Command" > </div>
+                                <input type="button" class="btn btn-xl btn-success" value="Run" name="${hostname}" onclick="cmd(this)">
+                        </div>
+                    </form>
+                    <div class="panel-body p5">
+                        <div class="test_box" contenteditable="true"><br /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function cmd(_this) {
+        var cmd = $(":text").val();
+        var hostname = $(_this).attr("name");
+        var data = {
+            "cmd": cmd,
+            "hostname": hostname
+        };
+
+     $.ajax ({
+                type:'post',
+                url:"${SITE_URL}salt_cmd/",
+                data: data,
+                success:function (res) {
+                   if (res.result) {
+                                $(".test_box").append(
+                                        '执行命令: ',cmd,"\n",'目标主机: ',hostname,"\n",
+                                        '执行时间: ',res.run_time,"\n",'执行结果: ',"\n",res.data,"\n",
+                                        '------------------------------------------------------------\n'
+                                );
+                                $(".test_box").scrollTop(50000000)
+                            }
+                            else {
+                                swal(res.message, cmd, 'error');
+                            }
+                }
+            });
+    }
+</script>
+</html>

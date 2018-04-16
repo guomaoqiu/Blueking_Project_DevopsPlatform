@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BkOps</title>
+    <link href="${STATIC_URL}opsplatform/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${STATIC_URL}opsplatform/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- Toastr style -->
+    <link href="${STATIC_URL}opsplatform/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="${STATIC_URL}opsplatform/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="${STATIC_URL}opsplatform/css/animate.css" rel="stylesheet">
+    <link href="${STATIC_URL}opsplatform/css/style.css" rel="stylesheet">
+    <link href="${STATIC_URL}opsplatform/css/bk.css" rel="stylesheet">
+
+    <!-- favicon.ico -->
+    <link href="${STATIC_URL}favicon.ico" type="image/x-icon" rel="icon">
+    <!-- 消息闪现 -->
+    <link rel="stylesheet" type="text/css" href="${STATIC_URL}opsplatform/css/sweetalert.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                          <a href="${SITE_URL}"><span>
+                          <img alt="" class="avatar width-full rounded-2" height="90" src="${STATIC_URL}img/logo.png" width="145">
+                             </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${user.username}</strong>
+                             </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="${BK_PLAT_HOST}/accounts/profile/" target="_blank">个人信息</a></li>
+                                <li><a href="${LOGOUT_URL}">注销</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            Ops
+                        </div>
+                    </li>
+                     <li>  <!-- 默认为主页 -->
+                        <a href="${SITE_URL}"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span></a>
+                    </li>
+                     <li>
+                        <a href=""><i class="fa fa-table"></i> <span class="nav-label">资产管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="${SITE_URL}server_list/">服务器列表</a></li>
+
+                        </ul>
+                    </li>
+                          <li>
+                        <a href=""><i class="fa fa-align-justify"></i> <span class="nav-label">游戏服操作</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="${SITE_URL}online_maintain">正式服维护</a></li>     <!-- 调用job平台作业 -->
+                            <li><a href="">CBT服务器操作</a></li>  <!-- 调用job平台作业 -->
+                        </ul>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa fa-wrench"></i> <span class="nav-label">SaltStack</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="${SITE_URL}saltkey_list">Minion客户端</a></li>
+                            <li><a href="${SITE_URL}action_saltcmd">文件分发</a></li>
+                            <li><a href="${SITE_URL}soft_deploy">应用部署</a></li>
+                            <li><a href="${SITE_URL}action_saltcmd">命令执行</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 判断是否是超级用户，如果是才显示该功能 -->
+                     % if request.user.is_superuser:
+                     <li>
+                        <a href="${SITE_URL}api_connect"><i class="fa fa-bullseye"></i> <span class="nav-label">API管理</span></a>
+                    </li>
+                    % endif
+
+                   <!--    <li>
+                        <a href="${SITE_URL}run"><i class="fa fa-paper-plane"></i> <span class="nav-label">定时测试</span></a>
+                    </li> -->
+                    <li>
+                        <a href="${SITE_URL}execute_task"><i class="fa fa-tasks"></i> <span class="nav-label">任务中心</span></a>
+                    </li>
+                       <li>
+                        <a href="${SITE_URL}get_task_history"><i class="fa fa-film"></i> <span class="nav-label">任务历史</span></a>
+                    </li>
+                 <!--      <li>
+                        <a href="${SITE_URL}log_audit"><i class="fa fa-film"></i> <span class="nav-label">操作日志</span></a>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
+        <div id="page-wrapper" class="gray-bg dashbard-2">
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " title='收起'><i class="fa fa-bars" ></i> </a>
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <span class="m-r-sm text-muted welcome-message">Hello <code>${user.username}</code></span>
+                </li>
+                <li>
+                    <a href="${BK_PLAT_HOST}">
+                        <i class="fa fa-sign-out"></i> 返回工作台
+                    </a>
+                </li>
+                <li>
+                    <a href="${LOGOUT_URL}">
+                        <i class="fa fa-sign-out"></i> 登出
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        </div>
+
+     <%block name='content'></%block>
+</div>
+
+    <!-- 消息闪现 -->
+    <script src="${STATIC_URL}opsplatform/js/sweetalert.min.js"></script>
+
+    <!-- Mainly scripts -->
+
+    <script src="${STATIC_URL}opsplatform/js/bootstrap.min.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Flot -->
+    <script src="${STATIC_URL}opsplatform/js/plugins/flot/jquery.flot.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/plugins/flot/jquery.flot.pie.js"></script>
+
+    <!-- Peity -->
+    <script src="${STATIC_URL}opsplatform/js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/demo/peity-demo.js"></script>
+
+    <script src="${STATIC_URL}opsplatform/js/layer.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="${STATIC_URL}opsplatform/js/inspinia.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="${STATIC_URL}opsplatform/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- GITTER -->
+    <script src="${STATIC_URL}opsplatform/js/plugins/gritter/jquery.gritter.min.js"></script>
+
+    <!-- Sparkline -->
+    <script src="${STATIC_URL}opsplatform/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Sparkline demo data  -->
+    <script src="${STATIC_URL}opsplatform/js/demo/sparkline-demo.js"></script>
+
+    <!-- ChartJS-->
+    <script src="${STATIC_URL}opsplatform/js/plugins/chartJs/Chart.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="${STATIC_URL}opsplatform/js/plugins/toastr/toastr.min.js"></script>
+
+</body>
+</html>

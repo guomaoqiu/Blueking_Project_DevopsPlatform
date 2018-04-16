@@ -1,0 +1,59 @@
+<%inherit file="base.html"/>
+<%block name="content">
+<script src="${STATIC_URL}opsplatform/js/jquery-1.10.2.min.js"></script>
+
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>Test</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+
+                        <li class="active">
+                            <strong>test</strong>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Simple line chart
+                            </h5>
+
+
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart1" class="ct-perfect-fourth">
+                         <button id="test2" >小小提示层</button>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<script>
+$('#test2').on('click', function(){
+ layer.open({
+        type: 2,
+        area: ['1100px', '700px'],
+        fixed: true, //不固/
+        closeBtn: 0,
+        shadeClose: true,
+        maxmin: true,
+        skin: 'layui-layer-rim',
+        content: '../test/'
+        });
+});
+</script>
+
+</%block>

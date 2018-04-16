@@ -1,0 +1,264 @@
+<%inherit file="base.html"/>
+<%block name="content">
+    <script src="${STATIC_URL}opsplatform/js/jquery-2.1.1.js"></script>
+    <link href="https://magicbox.bkclouds.cc/static_api/v3/assets/jquery.sumoselect-2.0.0/sumoselect.css" rel="stylesheet">
+    <script src="https://magicbox.bkclouds.cc/static_api/v3/assets/jquery.sumoselect-2.0.0/jquery.sumoselect.min.js"></script>
+    <link href="https://magicbox.bkclouds.cc/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
+    <script src="https://magicbox.bkclouds.cc/static_api/v3/assets/select2-3.5.2/select2.js"></script>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>配置管理</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+                        
+                        <li class="active">
+                            <strong>应用部署</strong>
+
+                        </li>
+                    </ol>
+                </div>
+               
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>可部署应用:
+                            </h5>
+
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart1" class="ct-perfect-fourth">
+                                <img src="${STATIC_URL}img/nginx.png" style="width: 110px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <img src="${STATIC_URL}img/logo_zabbix_petit.gif" style="width: 110px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <img src="${STATIC_URL}img/467px-Redis_Logo.svg.png" style="width: 110px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <img src="${STATIC_URL}img/mongodblogo-580x358.png" style="width: 110px">
+                            </div>
+                            <hr>
+                                 <table>
+                                     <tr>
+                                      <td><button class="btn btn-xs btn-primary" style="width:160px;">主机列表</button>
+                                      <form>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <select id="k1" size="25" style="width:160px;" multiple="multiple">
+                                                        % for each_host in all_host:
+                                                        <option value="${each_host}" id="${each_host}">${each_host}</option>
+                                                        % endfor
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input class="btn btn-xs btn-primary" type="button" id="b1" value=" => " title="单个选择"/>
+                                                    <input class="btn btn-xs btn-primary" type="button" id="b3" value="==>>" title="全部选择"/><br/>
+                                                    <input class="btn btn-xs btn-success" type="button" id="b2" value=" <= "/>
+                                                    <input class="btn btn-xs btn-success" type="button" id="b4" value="<<=="/>
+                                                </td>
+                                                <td>
+                                                    <select id="k2" value="Ning4" size="28" style="width:160px;" multiple="multiple">
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                      </form>
+                                    </td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td><button class="btn btn-xs btn-primary" style="width:160px;">应用列表</button>
+                                      <form >
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <select id="kk1" size="25" style="width:160px;" multiple="multiple">
+                                                        % for each_host in soft:
+                                                        <option value="${each_host}" id="${each_host}">${each_host}</option>
+                                                        % endfor
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input class="btn btn-xs btn-primary" type="button" id="bb1" value=" => "/>
+                                                    <input class="btn btn-xs btn-primary" type="button" id="bb3" value="==>>"/><br/>
+                                                    <input class="btn btn-xs btn-success" type="button" id="bb2" value=" <= "/>
+                                                    <input class="btn btn-xs btn-success" type="button" id="bb4" value="<<=="/>
+                                                </td>
+                                                <td>
+                                                    <select id="kk2" value="Ning4" size="28" style="width:160px;" multiple="multiple">
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                     </form>
+                                   </td>
+                                   <td style="width: auto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                     <td>
+                                       <form >
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                 <input type="button" class="btn btn-xl btn-success"  value="开始部署" onclick="start_deploy()">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                     </form>
+
+                                   </td>
+                                 </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script language="javascript">
+    $(document).ready(function(){
+        $("#b1").click(function(){
+            $("#k2").append($("#k1 option:selected"));
+        });
+
+        $("#b2").click(function(){
+            $("#k1").append($("#k2 option:selected"));
+        });
+
+        $("#b3").click(function(){
+            $("#k2").append($("#k1 option"));
+        });
+
+        $("#b4").click(function(){
+            $("#k1").append($("#k2 option"));
+        });
+    });
+    // 应用选择
+        $(document).ready(function(){
+        $("#bb1").click(function(){
+            $("#kk2").append($("#kk1 option:selected"));
+        });
+
+        $("#bb2").click(function(){
+            $("#kk1").append($("#kk2 option:selected"));
+        });
+
+        $("#bb3").click(function(){
+            $("#kk2").append($("#kk1 option"));
+        });
+
+        $("#bb4").click(function(){
+            $("#kk1").append($("#kk2 option"));
+        });
+    });
+</script>
+<script>
+    function start_deploy() {
+        // 获取选中的主机
+        var host_arr = new Array(); //数组定义标准形式，不要写成Array arr = new Array();
+        $("#k2 option").each(function () {
+            host_arr.push($(this).val());
+
+        });
+        // 获取选中的应用
+        var soft_arr = new Array(); //数组定义标准形式，不要写成Array arr = new Array();
+        $("#kk2 option").each(function () {
+            soft_arr.push($(this).val());
+
+        });
+
+        // 组装数据
+        var data ={
+            "host_arr": host_arr.join(','),
+            "soft_arr": soft_arr.join(',')
+        };
+
+        // 判断用户是否选择了主机或者应用
+        if (host_arr.length == 0 || soft_arr.length == 0 ){
+                swal({
+                  title: "主机和应用不能为空，请重新选择...",
+                  timer: 1500,
+                    type:'error',
+                  showConfirmButton: false
+                });
+            exit;  // 如果为空，直接退出js
+        }
+        swal({
+              title: "你确定在主机【 " + host_arr + "】" + "\n部署" + "【" + soft_arr + "】",
+             // text: "删除后需要再次认证...",
+              type: "warning",
+              showCancelButton: true,
+              showLoaderOnConfirm: true,
+              confirmButtonColor: "#1ab394",
+              confirmButtonText: "是的，部署它们",
+              cancelButtonText: "我在想想吧...",
+              closeOnConfirm: false,
+              closeOnCancel: true  //关闭取消后还弹出让你确认的效果提示
+            },
+              function(isConfirm){
+              if (isConfirm) {    // 如果确认就会去携带者hostname去后台处理
+
+
+                     swal({
+                                  title: "好的，部署任务正在后台运行...",
+                                  timer: 1000,
+                                    type:'success',
+                                  showConfirmButton: false
+                                });
+
+               $.ajax ({
+                        type:'post',
+                        data: data,
+                        dataType:'json',
+                        url:"${SITE_URL}soft_deploy/",
+                        success:function(res){   //将处理的结果进行判断，根据执行失败，成功现实的提示不同的内容
+                            if (res.result) {
+                               swal({
+                                  title: "好的，部署任务正在后台运行...",
+                                  timer: 1000,
+                                    type:'success',
+                                  showConfirmButton: false
+                                });
+
+                               //------------遍历数组 .each的使用-------------
+                               var anArray = res['data'];
+
+                                     $.each(anArray,function(index,value) {
+                                         // id
+                                         console.log(value['id']);
+                                         //msg
+                                         console.log(value['msg']);
+                                         //job_id
+                                         console.log(value['job_id'])
+
+                                        $('tbody.deploy_info').append("<tr><td>" +value['id']+ "</td><td>" +value['msg']+ "</td><td>" + "<button " +  "class=" + "btn-primary" + " name=" + value['job_id'] + " onclick=job_info(this)" +">" + value['job_id'] + "</button>" + "</td></tr>")
+
+                                     });
+                                   // $("#project").append(tbody);
+
+
+
+                                 // 点击确定之后清空两个文本框的内容
+                                 $("#k2").empty();
+                                 $("#kk2").empty();
+
+                            }
+                            else {
+                                swal('erro');
+                                //alert('not ok');
+                                //swal(res.message, "", "error");
+                            }
+                        }
+                    });
+              }
+            });
+    }
+</script>
+
+
+<!-- 通过jid获取结果-->
+<script>
+    function job_info(_this){
+        var job_id = $(_this).attr("name");
+        layer.msg("你要查看的jid为: "+job_id)
+    }
+</script>
+</%block>
+

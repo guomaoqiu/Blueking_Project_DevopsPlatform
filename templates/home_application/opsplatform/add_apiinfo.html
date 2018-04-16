@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://magicbox.bkclouds.cc/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://magicbox.bkclouds.cc/static_api/v3/bk/css/bk.css?v=1.0.1" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="king-container clearfix">
+                <div class="panel-body p5">
+                  <form class="form-horizontal" id="myform" action="${SITE_URL}api_connect/" method="post" >
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">场景:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="appname" placeholder="场景">
+                            <div class="king-instruction king-instruction-success">
+                                <p>说明:用于调用第三方平台的接口:</br>例如 <span>saltstack</span>, <span>zabbix</span>, <span>grarfana</span></p>
+                                <p>填写完成之后在平台应用能调用到的地方就直接可以使用该api信息连接.</p>
+                            </div>
+                        </div>
+                        <span class="text-danger mt5 fl">*</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">用户名:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="username" placeholder="API用户名">
+                        </div>
+                        <span class="text-danger mt5 fl">*</span>
+                    </div>
+                      <div class="form-group">
+                        <label   class="col-sm-3 control-label">密码:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="password" placeholder="API密码">
+                        </div>
+                        <span class="text-danger mt5 fl">*</span>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-3 control-label">URL:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="url" placeholder="API URL">
+                        </div>
+                        <span class="text-danger mt5 fl">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-7 col-sm-offset-3">
+                            <input type="submit"  class="king-btn king-success"  onclick="DoAjax()" value="提交">
+                            <input type="reset" class="king-btn king-default" value="重置">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

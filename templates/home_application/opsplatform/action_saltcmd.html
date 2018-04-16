@@ -1,0 +1,106 @@
+<%inherit file="base.html"/>
+<%block name="content">
+
+<link href="https://magicbox.bkclouds.cc/static_api/v3/bk/css/bk.css?v=1.0.1" rel="stylesheet">
+
+<style>
+.test_box {
+
+    min-height: 550px;
+    max-height: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3px;
+    outline: 0;
+    border: 1px solid #a0b3d6;
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    -webkit-user-modify: read-write-plaintext-only;
+    background-color: #161616;
+    color:green;
+}
+</style>
+    <script src="${STATIC_URL}opsplatform/js/jquery-2.1.1.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/jquery.dataTables.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/dataTables.bootstrap.js"></script>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>Salt命令执行</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+
+                        <li class="active">
+                            <strong>Salt命令执行</strong>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+
+                <div class="col-lg-4">
+
+                    <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="king-notice-box king-notice-happy">
+                                    <p class ="king-notice-text">
+                                     目标主机选择:
+                                    </p>
+                                </div>
+                            </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart5" class="ct-perfect-fourth">
+                                <div class="king-page-box">
+                                    <div class="king-container clearfix">
+                                        <div class="container-fluid mb0 ">
+                                            <div class="row">
+
+                                <div class="plugin3_demo" id="plugin3_demo2" style="display:inline-block;">
+                                    <!-- select2 通过javascript start -->
+                                    <input type="display" class="select2_box" style="width:300px;">
+                                    <!-- select2 通过javascript end -->
+                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-8">
+                    <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="king-notice-box king-notice-happy">
+                                    <p class ="king-notice-text">
+                                     命令执行结果:
+                                    </p>
+                                </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart5" class="ct-perfect-fourth">
+                               <div class="test_box" contenteditable="true"><br /></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+<script>
+    // select2 通过数组数据生成
+    var bkArr = [{ id: 0, text: '奥迪' }, { id: 1, text: '奔驰' }, { id: 2, text: '宝马' }] ;
+    $("#plugin3_demo2 .select2_box").select2({ data: bkArr });
+</script>
+</%block>

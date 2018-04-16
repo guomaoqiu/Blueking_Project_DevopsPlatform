@@ -1,0 +1,408 @@
+<%inherit file="base.html"/>
+<%block name="content">
+    <script src="${STATIC_URL}opsplatform/js/jquery-2.1.1.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/jquery.dataTables.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/dataTables.bootstrap.js"></script>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>Dashboards</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+
+                        <li class="active">
+                            <strong>Dashboards</strong>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+
+            <div class="col-sm-3">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-server fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 业务主机数 </span>
+                            <h2 class="font-bold">${server_count} 台</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-edit fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 项目 </span>
+                            <h2 class="font-bold">8 个</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-bar-chart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 发布 </span>
+                            <h2 class="font-bold">12 次</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="col-sm-3">
+                <div class="widget style1 bg-primary">
+                    <div class="row">
+                        <div class="col-xs-4 text-center">
+                            <i class="fa  fa-random fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 应用部署 </span>
+                            <h2 class="font-bold">5423 次</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active"><a href="#messages">说明</a></li>
+                        <li><a href="#deploy_log">应用部署日志</a></li>
+                        <li><a href="#settings">命令执行日志</a></li>
+                        <li><a href="#loginlog">平台登录日志</a></li>
+                    </ul>
+
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div id="ct-chart1" class="ct-perfect-fourth">
+                                <div class="tab-content">
+                                  <div class="tab-pane active" id="messages">
+                                    <div class="king-instruction king-instruction-success">
+                                        <h5>应用部署日志</h5>
+                                        <p>&nbsp;&nbsp;* master将minion的执⾏结果存放在本地/var/cache/salt/master/jobs目录<br>&nbsp;&nbsp;&nbsp; 默认缓存24⼩时(可以通过修改master配置⽂件keepjobs选项调整)
+                                        若超过缓存时间,将查询不到本次部署记录...</p>
+                                        <h5>命令执行日志</h5>
+                                        <p>&nbsp;&nbsp;* 命令执行日志主要记录了: </p>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、命令执行时间</p>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、命令执行目标</p>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、命令执行人员</p>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、命令执行命令</p>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、命令执行执行结果</p>
+                                    </div>
+                                  </div>
+                                  <div class="tab-pane" id="deploy_log">
+
+                                    <table id="deploy_log_t" class="table table-bordered table-hover">
+                                        点击<code>【部署ID】</code>后面相对应的<code>【查看结果】</code>即可查看此次部署任务的返回结果
+                                        <thead>
+                                            <tr>
+
+                                                 <th>#</th>
+                                               <th>目标主机</th>
+                                               <th>部署应用</th>
+                                               <th>部署用户</th>
+                                               <th>部署时间</th>
+                                               <th>部署ID</th>
+                                               <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody id="t_body">
+                                                 % for each_deploy in deploy_list:
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>${each_deploy['deploy_target']}</td>
+                                                        <td>${each_deploy['deploy_app']}</td>
+                                                        <td>${each_deploy['deploy_user']}</td>
+                                                        <td>${each_deploy['deploy_time']}</td>
+                                                        <td>${each_deploy['deploy_jid']}</td>
+                                                        <td>
+                                                            <input type="button" class="btn btn-xs btn-info"  check_id="${each_deploy['deploy_jid']}" url=${SITE_URL} value="查看结果" onclick="getdeploy_result(this)" />
+
+                                                        </td>
+                                                    </tr>
+                                                % endfor
+                                            </tbody>
+                                             <button class="btn btn-sm btn-danger" name="deploy" onclick="clean_all_runlog(this)">清空所有日志</button>
+                                            <tfoot >
+                                       </tfoot>
+                                      </table>
+                                  </div>
+                                  <div class="tab-pane" id="settings">
+                                         <table id="runcmd_log_t"  class="table table-bordered table-hover">
+                                        点击对应的<code>【查看结果】</code>即可查看此次部署任务的返回结果
+                                        <thead>
+                                            <tr>
+                                               <th>#</th>
+                                               <th>目标主机</th>
+                                               <th>执行命令</th>
+                                               <th>执行用户</th>
+                                               <th>执行时间</th>
+                                               <th style="width: 100px">执行结果</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody id="t_body">
+                                                % for each_runcmd in runcmd_list:
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>${each_runcmd['runcmd_target']}</td>
+                                                        <td>${each_runcmd['runcmd_cmd']}</td>
+                                                        <td>${each_runcmd['runcmd_user']}</td>
+                                                        <td>${each_runcmd['runcmd_time']}</td>
+                                                       <!-- <td>${each_runcmd['runcmd_result']}</td>-->
+                                                        <td>
+                                                            <input type="button" class="btn btn-xs btn-info" runcmd=${each_runcmd['runcmd_cmd']} url=${SITE_URL} name="${each_runcmd['runcmd_target']}" runcmd_result="${each_runcmd['runcmd_result']}" value="查看结果" onclick="get_result(this)">
+                                                        </td>
+                                                    </tr>
+                                                % endfor
+                                            </tbody>
+                                            <tfoot >
+
+                                       </tfoot>
+                                             <button class="btn btn-sm btn-danger" name="runcmd" onclick="clean_all_runlog(this)">清空所有日志</button>
+                                      </table>
+                                  </div>
+                                  <div class="tab-pane" id="loginlog">
+
+                                    <table id="deploy_log_t" class="table table-bordered table-hover">
+                                        平台登录日志
+                                        <thead>
+                                            <tr>
+                                               <th>ID</th>
+                                               <th>登录IP</th>
+                                               <th>登录用户</th>
+                                               <th>登录时间</th>
+                                               <th>登录浏览器</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody id="t_body">
+                                                 % for each_deploy in deploy_list:
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>${each_deploy['deploy_target']}</td>
+                                                        <td>${each_deploy['deploy_app']}</td>
+                                                        <td>${each_deploy['deploy_user']}</td>
+                                                        <td>${each_deploy['deploy_time']}</td>
+                                                        <td>${each_deploy['deploy_jid']}</td>
+                                                        <td>
+                                                            <input type="button" class="btn btn-xs btn-info"  check_id="${each_deploy['deploy_jid']}" url=${SITE_URL} value="查看结果" onclick="getdeploy_result(this)" />
+
+                                                        </td>
+                                                    </tr>
+                                                % endfor
+                                            </tbody>
+                                             <button class="btn btn-sm btn-danger" name="deploy" onclick="clean_all_runlog(this)">清空所有日志</button>
+                                            <tfoot >
+                                       </tfoot>
+                                      </table>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Line scatter diagram</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart2" class="ct-perfect-fourth"></div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <!--
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Stacked bar chart</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart3" class="ct-perfect-fourth"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Horizontal bar chart </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart4" class="ct-perfect-fourth"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Simple pie chart</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart5" class="ct-perfect-fourth"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Gauge chart </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart6" class="ct-perfect-fourth">
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+<script>
+    function get_result(_this){
+        var runcmd_result  = $(_this).attr('runcmd_result');
+        var deploy_target = $(_this).attr('name');
+        var runcmd = $(_this).attr('runcmd');
+        layer.open({
+          type: 1,
+          title: false,
+          closeBtn: 0,
+          area: ['auto', 'auto'],
+          shadeClose: true,
+          skin: 'yourclass',
+          content:  "目标主机: " + "<code>" + deploy_target  + "</code>" + "</br>" + "执行命令: " +  "<code>" +  runcmd + "</code>"+ "<pre>" + runcmd_result + "</pre>"
+        });
+  }
+</script>
+<script>
+    function getdeploy_result(_this){
+        var  deploy_jid = $(_this).attr('check_id');
+        var url = $(_this).attr('url');
+        // 环境判断...
+           if (url == "/") {
+                        layer.open({
+                            type: 2,
+                            area: ['1100px', '700px'],
+                            fixed: true, //不固/
+                            closeBtn: 0,
+                            shadeClose: true,
+                            maxmin: true,
+                            skin: 'layui-layer-rim',
+                            content: "../salt_jid_result/?jid=" + deploy_jid
+                        });
+                    }
+                else {
+                    layer.open({
+                        type: 2,
+                        area: ['1100px', '700px'],
+                        fixed: true, //不固/
+                        closeBtn: 0,
+                        shadeClose: true,
+                        maxmin: true,
+                        skin: 'layui-layer-rim',
+                        content: url + "/salt_jid_result/?jid=" + deploy_jid
+                    });
+                }
+
+    }
+</script>
+
+<script>
+    $('#myTab a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    })
+</script>
+
+<script type="text/javascript">
+  $(function () {
+    var language = {
+      search: '搜索：',
+      lengthMenu: "每页显示 _MENU_ 记录",
+      zeroRecords: "没找到相应的数据！",
+      info: "分页 _PAGE_ / _PAGES_",
+      infoEmpty: "暂无数据！",
+      infoFiltered: "(从 _MAX_ 条数据中搜索)",
+      paginate: {
+        first: '首页',
+        last: '尾页',
+        previous: '上一页',
+        next: '下一页'
+      }
+    };
+    $('#deploy_log_t').dataTable({
+      paging: true, //隐藏分页
+      ordering: true, //关闭排序
+      info: false, //隐藏左下角分页信息
+      searching: true, //关闭搜索
+      pageLength : 10, //每页显示几条数据
+      lengthChange: true, //不允许用户改变表格每页显示的记录数
+      language: language, //汉化
+      columnDefs: [  // 这是第一列不进行排序
+        { "orderable": false, "targets": 0 }
+      ]
+    } );
+   $('#runcmd_log_t').dataTable({
+      paging: true, //隐藏分页
+      ordering: true, //关闭排序
+      info: false, //隐藏左下角分页信息
+      searching: true, //关闭搜索
+      pageLength : 10, //每页显示几条数据
+      lengthChange: true, //不允许用户改变表格每页显示的记录数
+      language: language, //汉化
+      columnDefs: [  // 这是第一列不进行排序
+        { "orderable": false, "targets": 0 }
+      ]
+    } );
+  });
+</script>
+
+<script>
+      //操作选项里面的"删除"功能
+        function clean_all_runlog(_this) {
+            var logtype=$(_this).attr('name');
+                swal({
+                  title: "您确定所有日志记录？",
+                  text: "删除后将无法恢复，请谨慎操作！",
+                  type: "warning",
+                  showCancelButton: true,
+                  showLoaderOnConfirm: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "是的，删除它们",
+                  cancelButtonText: "我在想想吧...",
+                  closeOnConfirm: false,
+                  closeOnCancel: true  //关闭取消后还弹出让你确认的效果提示
+                },
+                  function(isConfirm){
+                      if (isConfirm) {
+                        $.ajax ({
+                                type:'post',
+                                url:"${SITE_URL}del_runcmd_log/?logtype=" + logtype,
+                                success:function(res){   //将处理的结果进行判断，根据执行失败，成功现实的提示不同的内容
+                                    if (res.result) {
+                                        swal(res.message, "", "success");
+                                        $("#t_body").remove()
+                                    }
+                                    else {
+                                        swal(res.message, "", "error");
+                                    }
+                                }
+                            });
+                         }
+                    });
+            }
+</script>
+</%block>

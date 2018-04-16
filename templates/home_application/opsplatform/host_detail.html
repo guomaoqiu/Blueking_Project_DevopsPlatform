@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="${STATIC_URL}opsplatform/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${STATIC_URL}opsplatform/css/bk.css?v=1.0.1" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content  animated fadeInRight">
+
+        <div class="king-container clearfix">
+            % for dd in data:
+            <div class="panel panel-success ">
+                <div class="panel-heading">&nbsp;主机 ${dd['hostname']} 详情:</div>
+            </div>
+
+            <div class="panel panel-info m5">
+                <div class="panel-heading"> 基础信息 </div>
+                <div class="panel-body p5">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width: 100px;" class="active">主机ID</td>
+                                <td style="width: 40%;">${dd['id']}</td>
+                                <td style="width: 100px;" class="active">主机名</td>
+                                <td style="width: 40%;">${dd['hostname']}</td>
+                            </tr>
+                             <tr>
+                                <td style="width: 100px;" class="active">操作系统</td>
+                                <td style="width: 40%;">${dd['os_release']}</td>
+                                 <td style="width: 100px;" class="active">内核</td>
+                                <td style="width: 40%;">${dd['kernelrelease']}</td>
+                            </tr>
+                           <tr>
+                                <td style="width: 100px;" class="active">负责人</td>
+                                <td style="width: 40%;">None</td>
+                                 <td style="width: 100px;" class="active">购买日期</td>
+                                <td style="width: 40%;">None</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100px;" class="active">备注</td>
+                                <td style="width: 40%;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+                </div>
+
+            <div class="panel panel-info m5">
+                <div class="panel-heading"> CPU信息 </div>
+                <div class="panel-body p5">
+                        <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width: 100px;" class="active">CPU类型</td>
+                                <td style="width: 40%;">${dd['cpu_type']}</td>
+                                <td style="width: 100px;" class="active">物理CPU颗数</td>
+                                <td style="width: 40%;">${dd['num_cpus']}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-info m5">
+                <div class="panel-heading"> 网络信息 </div>
+                <div class="panel-body p5">
+                           <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width: 100px;" class="active">内网IP</td>
+                                <td style="width: 40%;">${dd['private_ip']}</td>
+                                <td style="width: 100px;" class="active">外网IP</td>
+                                <td style="width: 40%;">${dd['public_ip']}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+             <div class="panel panel-info m5">
+                <div class="panel-heading"> 内存信息 </div>
+                <div class="panel-body p5">
+                           <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width: 100px;" class="active">内存总量</td>
+                                <td style="width: 40%;">${dd['mem_total']} M</td>
+                                <td style="width: 100px;" class="active">可用内存</td>
+                                <td style="width: 40%;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            % endfor
+        </div>
+    </div>
+</body>
+</html>

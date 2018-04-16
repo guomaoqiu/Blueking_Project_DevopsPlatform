@@ -1,0 +1,225 @@
+<%inherit file="base.html"/>
+<%block name="content">
+
+<link href="https://magicbox.bkclouds.cc/static_api/v3/bk/css/bk.css?v=1.0.1" rel="stylesheet">
+
+    <script src="${STATIC_URL}opsplatform/js/jquery-2.1.1.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/jquery.dataTables.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/dataTables.bootstrap.js"></script>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>维护</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+
+                        <li class="active">
+                            <strong>维护操作</strong>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="king-notice-box king-notice-happy">
+                                    <p class ="king-notice-text">
+                                     日常维护任务:
+                                    </p>
+                                </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart5" class="ct-perfect-fourth">
+                                <div class="king-page-box">
+                                    <div class="king-container clearfix">
+                                        <div class="container-fluid mb0 ">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-10">
+                                                    <div class="panel-body">
+                                                               <table class="table table-bordered table7_demo">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="width: 20px">#</th>
+                                                                        <th style="width: 200px">任务名称</th>
+                                                                        <th style="width: 30px">执行</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            <tbody>
+                                                              % for k,v in task_name:
+                                                              <tr>
+                                                                        <td>${k}</td>
+                                                                        <td>${v}</td>
+                                                                        <td>
+                                                                            <input type="button" class="king-btn king-radius king-info ml10" check_id='${k}' name='${v}' onclick="stop_service(this)" value="执行" />
+                                                                        </td>
+                                                                    </tr>
+                                                              % endfor
+                                                            </tbody>
+                                                         </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="king-notice-box king-notice-happy">
+                                    <p class ="king-notice-text">
+                                     日常维护记录:
+                                    </p>
+                                </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart5" class="ct-perfect-fourth">
+                               <table id="deploy_log_t" class="table table-bordered table-hover">
+                                    点击<code>【执行ID】</code>后面相对应的<code>【查看结果】</code>即可查看此次任务执行的返回结果
+                                    <thead>
+                                        <tr>
+                                           <th>任务名称</th>
+                                           <th>执行用户</th>
+                                           <th>执行时间</th>
+                                           <th>任务ID</th>
+                                           <th>Check Result</th>
+                                        </tr>
+                                    </thead>
+                                     <tbody id="t_body">
+                                             % for each_mat in data:
+                                                <tr>
+                                                    <td>${each_mat['mattask_name']}</td>
+                                                    <td>${each_mat['mattask_user']}</td>
+                                                    <td>${each_mat['mattask_creattime']}</td>
+                                                    <td>${each_mat['mattask_jid']}</td>
+                                                    <td>
+                                                        <input type="button" class="king-btn king-radius king-success ml10" check_id='${each_mat["mattask_jid"]}' name='${v}' onclick="getmat_result(this)" value="查看结果" />
+                                                    </td>
+                                                </tr>
+                                            % endfor
+                                        </tbody>
+                                         <input type="button" class="btn btn-sm btn-danger" onclick="clean_all_runlog()" value="清空所有日志" />
+                                        <tfoot >
+                                   </tfoot>
+                                  </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+<script>
+    function stop_service(_this) {
+        var check_id = $(_this).attr("check_id");
+        var name = $(_this).attr("name");
+           swal({
+                  title: "您确定要执行【" + name + "】",
+                  text: "请三思而后行！",
+                  type: "warning",
+                  showCancelButton: true,
+                  showLoaderOnConfirm: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "是的，确定执行!",
+                  cancelButtonText: "我在想想吧...",
+                  closeOnConfirm: false,
+                  closeOnCancel: true  //关闭取消后还弹出让你确认的效果提示
+                },
+                  function(isConfirm){
+                  if (isConfirm) {    // 如果确认就会去携带者hostname去后台处理
+
+                      $.ajax ({
+                            type:'post',
+                            url:"${SITE_URL}online_maintain/?task_id="+check_id,
+                            success:function(res){   //将处理的结果进行判断，根据执行失败，成功现实的提示不同的内容
+                                if (res.result) {
+                                    swal(res.message, "执行日志记录了执行结果,点击查看", "success");
+                                    location.reload()
+                                }
+                                else {
+                                    swal(res.message, "", "error");
+                                }
+                            }
+                        });
+                     }
+                }
+              );
+    }
+</script>
+<script>
+    function getmat_result(_this){
+        var  deploy_jid = $(_this).attr('check_id');
+        var url = $(_this).attr('url');
+        // 环境判断...
+           if (url == "/") {
+                        layer.open({
+                            type: 2,
+                            area: ['1100px', '700px'],
+                            fixed: true, //不固/
+                            closeBtn: 0,
+                            shadeClose: true,
+                            maxmin: true,
+                            skin: 'layui-layer-rim',
+                            content: "../../salt_jid_result/?jid=" + deploy_jid
+                        });
+                    }
+                else {
+                    layer.open({
+                        type: 2,
+                        area: ['1100px', '700px'],
+                        fixed: true, //不固/
+                        closeBtn: 0,
+                        shadeClose: true,
+                        maxmin: true,
+                        skin: 'layui-layer-rim',
+                        content: "../../salt_jid_result/?jid=" + deploy_jid
+                    });
+                }
+    }
+</script>
+
+<script>
+    function clean_all_runlog() {
+          //  layer.msg('test')
+          //  swal('test')
+           swal({
+                  title: "您确定删除所有操作记录？",
+                  text: "请三思而后行！",
+                  type: "warning",
+                  showCancelButton: true,
+                  showLoaderOnConfirm: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "是的，确定!",
+                  cancelButtonText: "我在想想吧...",
+                  closeOnConfirm: false,
+                  closeOnCancel: true  //关闭取消后还弹出让你确认的效果提示
+                },
+                  function(isConfirm){
+                  if (isConfirm) {    // 如果确认就会去携带者hostname去后台处理
+
+                      $.ajax ({
+                            type:'post',
+                            url:"${SITE_URL}del_maintain_log/",
+                            success:function(res){   //将处理的结果进行判断，根据执行失败，成功现实的提示不同的内容
+                                if (res.result) {
+                                    swal(res.message, "", "success");
+
+                                }
+                                else {
+                                    swal(res.message, "", "error");
+                                }
+                            }
+                         });
+                     }
+                   });
+    }
+</script>
+
+</%block>

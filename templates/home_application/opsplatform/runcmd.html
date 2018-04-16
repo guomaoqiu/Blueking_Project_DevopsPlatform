@@ -1,0 +1,93 @@
+<%inherit file="base.html"/>
+<%block name="content">
+    <script src="${STATIC_URL}opsplatform/js/jquery-2.1.1.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/jquery.dataTables.js"></script>
+    <script src="${STATIC_URL}opsplatform/js/dataTables.bootstrap.js"></script>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>Dashboards</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+
+                        <li class="active">
+                            <strong>Dashboards</strong>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Stacked bar chart</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart3" class="ct-perfect-fourth">
+                               <form class="form-horizontal">
+                                    <div class="form-group clearfix ">
+                                        <label class="col-sm-1 control-label bk-lh10 pt0">Linux命令：</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control " id="" placeholder="Linux Command"> </div>
+
+                                         <div class="col-sm-9 col-sm-offset-1"> <br>
+                                            <button type="button" class="btn btn-primary" onclick="choose_server()" style="width: 115px"><i class="fa fa-desktop"></i>&nbsp;选择服务器</button>
+                                        </div>
+                                        <div class="col-sm-9 col-sm-offset-1">
+                                             <button type="button" class="btn btn-success">执行</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div class="row">
+             <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Gauge chart </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart6" class="ct-perfect-fourth">
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Gauge chart </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="ct-chart6" class="ct-perfect-fourth">
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+
+<script>
+    function choose_server() {
+       layer.open({
+        type: 2,
+        area: ['1100px', '700px'],
+        fixed: true, //不固/
+        closeBtn: 0,
+        shadeClose: true,
+        maxmin: true,
+        skin: 'layui-layer-rim',
+        content: '../add_apiinfo/'
+        });
+
+    }
+</script>
+</%block>
+

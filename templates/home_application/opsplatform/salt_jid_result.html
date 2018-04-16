@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="${STATIC_URL}opsplatform/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${STATIC_URL}opsplatform/css/bk.css?v=1.0.1" rel="stylesheet">
+    <script src="${STATIC_URL}opsplatform/js/jquery-1.10.2.min.js"></script>
+</head>
+    <body class="gray-bg">
+        <div class="wrapper wrapper-content  animated fadeInRight">
+            <div class="king-container clearfix" style="blackcolor:">
+                % if result:
+                        <pre id="">${result.replace("\\n", "\n")}</pre>
+                % else:
+                     <center>
+                        <img alt="loadding" src="https://magicbox.bk.tencent.com/static_api/v3/components/loading2/gif/gears_36.gif">
+                        任务正在后台运行中，暂时没有返回,请稍后尝试查看部署结果...
+                    </center>
+                % endif
+            </div>
+        </div>
+    </body>
+</html>

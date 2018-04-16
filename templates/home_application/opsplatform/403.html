@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>访问权限不足(403页)</title>
+<link href="${STATIC_URL}css/base.css?v=1.0.1" rel="stylesheet" type="text/css"/>
+<link href="${STATIC_URL}opsplatform/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="font-family:Microsoft Yahei;" class="king-errorpage-middle">
+    <div class="king-exception-box king-login-page">
+        <img src="http://o.qcloud.com/static_api/bk/style_custom/images/expre_login_failure.jpg">
+       <!-- <img src="${STATIC_URL}img/expre_403.png"> -->
+        <h3>用户: ${username}</h3>
+        <h3>${messages}</h3>
+        <br>
+        <button class="king-btn-demo king-btn king-success" onclick="window.location.href='${paas_platurl}'" title="返回到工作台">返回到工作台</button>
+        <button class="king-btn-demo king-btn king-warning" onclick="window.location.href='${LOGOUT_URL}'" title="返回登录">返回登录</button>
+    </div>
+</body>
+
+</html>

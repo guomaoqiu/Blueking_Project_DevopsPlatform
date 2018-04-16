@@ -1,0 +1,138 @@
+<%inherit file="base.html"/>
+<%block name="content">
+<script src="${STATIC_URL}opsplatform/js/jquery-1.10.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/nanobar/0.2.1/nanobar.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <h2>任务中心</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${SITE_URL}">Home</a>
+                        </li>
+
+                        <li class="active">
+                            <strong>任务中心</strong>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Simple line chart
+                            </h5>
+
+
+                            </div>
+                            <div class="ibox-content">
+                                <div id="ct-chart1" class="ct-perfect-fourth">
+                             <button id="test2" >小小提示层</button>
+<hr>
+                            </div>
+
+                            <div id="ct-chart1" class="ct-perfect-fourth">
+                             <button id="test3" class="btn btn-primary" >执行任务</button>
+
+                            <hr>
+                            <h4 id='task_id'></h4> <a id='task_info'></a>
+                                <div class="progress progress-striped">
+                                    <div class="progress-bar progress-bar-primary" id="processbar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                        <span id="aa"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<script>
+$('#test2').on('click', function(){
+ layer.open({
+        type: 2,
+        area: ['1100px', '700px'],
+        fixed: true, //不固/
+        closeBtn: 0,
+        shadeClose: true,
+        maxmin: true,
+        skin: 'layui-layer-rim',
+        content: '../test/'
+        });
+});
+</script>
+
+
+
+
+
+<script>
+     $('#test3').on('click', function() {
+
+         $.ajax({
+             url: "${SITE_URL}execute_task/",
+             type: "post",
+             success: function (res) {
+                 task_id = res.data["task_id"];
+                 task_status = res.data["task_status"];
+                 if (task_id) {
+                      // 将本次task的进度展示区域展示在id=bar_show_area的div区域（append）
+                      // 进度条绑定区域
+                      $("#task_id").html("【任务执行进度】id: " + task_id)
+                     $("#processbar").append("<span id='"+task_id+"_span' style='float:left'></span><div id='"+task_id+"'></div><div>");
+
+                      // 创建进度条对象
+                      var nanobar = new Nanobar({target:document.getElementById(task_id)});
+                      update_g(task_id,nanobar);
+                      layer.msg("任务已在后台执行....请勿刷新此页面");
+                    // swal("任务id为:" + task_id + "\n状态:"+task_status);
+                 }
+                 else {
+                     alert('failed')
+                 }
+             }
+         });
+
+         function update_g(task_id,nanobar) {
+            $.get("${SITE_URL}task_result/?task_id=" + task_id, function (res) {
+                percent = parseInt(res['progress']);
+                // alert(percent);
+                nanobar.go(percent);
+                // if (data['state'] != 'PENDING' && data['state'] != 'PROGRESS'){//state == 'success'
+                if (res['state'] == 'success') {
+                    // 有的时候会出现走不完的情况，所以先清空，在直接填充
+                    $("#" + task_id + "_span").empty();
+                    $("#" + task_id + "_span").append(percent + '%' + ' 完成');
+                    $("#" + task_id).parent().css("background", "#1ab394"); //任务完成后
+                    swal("任务执行完毕！")
+                    //当任务完成后一般会查看任务详情，这里增加一个链接
+                    //$("#task_info").attr("href='www.baidu.com'" + "target='_blank'")
+                    //$("#task_info").html('任务详情')
+                }
+                else {
+
+                      $("#" + task_id + "_span").html(percent+"% 完成");
+                      $("#processbar").attr("style", "width:"+percent+"%");
+
+                    setTimeout(function () {
+                        update_g(task_id, nanobar);
+                    }, 2000);
+                }
+            })
+         }
+
+
+     })
+
+
+ </script>
+
+
+
+</%block>
