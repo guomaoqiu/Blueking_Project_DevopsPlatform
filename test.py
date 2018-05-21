@@ -20,7 +20,7 @@ class SendMail():
         self.__mail_host = 'smtp.qq.com'
         self.__mail_port = '465'
         self.__mail_user = '2399447849'
-        self.__mail_pass = 'Guomaoqiu150019'
+        self.__mail_pass = ''
         self.__mail_postfix = 'qq.com'
 
 
