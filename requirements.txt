@@ -24,7 +24,7 @@ pycrypto==2.6.1
 pyparsing==2.2.0
 python-dateutil==2.6.0
 pytz==2015.4
-PyYAML==3.12
+PyYAML==5.4
 pyzabbix==0.7.4
 requests==2.13.0
 shellescape==3.4.1
