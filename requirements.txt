@@ -6,7 +6,7 @@ billiard==3.3.0.20
 celery==3.1.18
 certifi==2017.4.17
 cycler==0.10.0
-Django==1.8.11
+Django==2.2.24
 django-celery==3.1.16
 flower==0.9.1
 functools32==3.2.3.post2
