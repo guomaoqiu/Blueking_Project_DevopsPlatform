@@ -31,6 +31,6 @@ shellescape==3.4.1
 simplejson==3.10.0
 six==1.10.0
 subprocess32==3.2.7
-suds==0.4
+suds==1.0.0
 tornado==4.2
 xlrd==1.0.0
