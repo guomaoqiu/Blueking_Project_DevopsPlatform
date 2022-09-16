@@ -14,7 +14,7 @@ futures==3.1.1
 httplib2==0.9.1
 kombu==3.0.26
 lxml==3.7.3
-Mako==1.0.1
+Mako==1.2.2
 MarkupSafe==0.23
 matplotlib==2.0.0
 MySQL-python==1.2.5
