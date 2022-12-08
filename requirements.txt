@@ -4,7 +4,7 @@ Babel==2.4.0
 backports.ssl-match-hostname==3.5.0.1
 billiard==3.3.0.20
 celery==3.1.18
-certifi==2017.4.17
+certifi==2022.12.7
 cycler==0.10.0
 Django==1.8.11
 django-celery==3.1.16
